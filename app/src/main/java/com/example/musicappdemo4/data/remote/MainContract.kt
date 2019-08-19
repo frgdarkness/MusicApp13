@@ -35,7 +35,7 @@ interface MainContract {
 
         fun unregisterReceiver(context: Context)
 
-        fun getListSong(context: Context):ArrayList<Song>
+        fun getSongs(context: Context):List<Song>
 
         fun onPauseSong()
 

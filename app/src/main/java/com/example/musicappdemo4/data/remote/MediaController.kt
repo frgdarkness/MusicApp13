@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.MediaPlayer
+import android.os.Bundle
 import android.os.PowerManager
 import android.util.Log
 import com.example.musicappdemo4.data.model.App
@@ -29,7 +30,7 @@ class MediaController(private val musicService: MusicService) : MediaPlayerListe
 
     init {
         context = musicService.applicationContext!!
-        listSong.addAll(MyMedia(context).getListSong())
+        listSong.addAll(MyMedia(context).getSongs())
         mediaPlayer.setOnCompletionListener(this)
         initMusicPlayer()
         registerReceiver()
@@ -100,7 +101,7 @@ class MediaController(private val musicService: MusicService) : MediaPlayerListe
         mediaPlayer.start()
         musicService.createNoti(song,true)
         callUpdateSongInfo()
-        Log.d(App.TAG,"playsongat : $posSongNow")
+        //Log.d(App.TAG,"playsongat : $posSongNow")
     }
 
     fun callUpdateSongInfo() {
@@ -112,7 +113,7 @@ class MediaController(private val musicService: MusicService) : MediaPlayerListe
     fun callUpdateStatusPlay(){
         val intent = Intent(ACTION_UPDATE_STATUS_PLAY)
         intent.putExtra(PLAY_STATUS,isPlaying())
-        Log.d(App.TAG,"call update status: ${isPlaying()}")
+        //Log.d(App.TAG,"call update status: ${isPlaying()}")
         context.sendBroadcast(intent)
     }
 
@@ -122,7 +123,7 @@ class MediaController(private val musicService: MusicService) : MediaPlayerListe
         unregisterReceiver()
         mediaPlayer.stop()
         mediaPlayer.release()
-        Log.d(App.TAG,"controller exit")
+        //Log.d(App.TAG,"controller exit")
     }
 
     override fun onCompletion(p0: MediaPlayer?) {
@@ -145,7 +146,7 @@ class MediaController(private val musicService: MusicService) : MediaPlayerListe
 
     private inner class NotiReceiver : BroadcastReceiver(){
         override fun onReceive(p0: Context?, p1: Intent?) {
-            Log.d(App.TAG,"Controller receiver: action = ${p1?.action}")
+            //Log.d(App.TAG,"Controller receiver: action = ${p1?.action}")
             when(p1?.action){
                 MusicService.ACTION_PREV -> prevSong()
                 MusicService.ACTION_PLAY -> pauseSong()

@@ -5,14 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Build
-import android.os.Handler
-import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
-import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import com.example.musicappdemo4.ui.MainActivity
 import com.example.musicappdemo4.R
-import com.example.musicappdemo4.data.model.App
 import com.example.musicappdemo4.data.model.MyMedia
 import com.example.musicappdemo4.data.model.Song
 import com.example.musicappdemo4.data.remote.MediaController
@@ -28,7 +25,7 @@ class MusicService : Service(){
         val ACTION_EXIT = "media.exit"
     }
 
-    private val mBinder = MusicServiceBinder()
+    private val binder = MusicServiceBinder()
     private val myMedia = MyMedia(this)
 
     private var mediaController: MediaController? = null
@@ -39,7 +36,7 @@ class MusicService : Service(){
         fun getService() = this@MusicService
     }
 
-    override fun onBind(p0: Intent?) = mBinder
+    override fun onBind(p0: Intent?) = binder
 
     override fun onCreate() {
         super.onCreate()
@@ -47,12 +44,12 @@ class MusicService : Service(){
         mediaSession = MediaSessionCompat(this,"MusicPLayer")
         notiManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
         createNotiChannel()
-        Log.d(App.TAG,"onCreate")
+        //Log.d(App.TAG,"onCreate")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(App.TAG,"Service destroyed")
+        //Log.d(App.TAG,"Service destroyed")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -70,7 +67,7 @@ class MusicService : Service(){
             }
             notiManager?.createNotificationChannel(channel)
         }
-        Log.d(App.TAG,"creatNotiChannel")
+        //Log.d(App.TAG,"creatNotiChannel")
     }
 
     fun createNoti(song: Song, isPlay: Boolean){
@@ -81,7 +78,7 @@ class MusicService : Service(){
 
         val iconPlay = if(isPlay) { R.drawable.ic_pause_main} else {R.drawable.ic_play_main}
         val bm = myMedia.getCoverBitMap(song)
-        val noti = androidx.core.app.NotificationCompat.Builder(this, CHANNEL_ID)
+        val noti = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(song.title)
             .setContentText(song.artist)
             .setLargeIcon(bm)
@@ -97,7 +94,7 @@ class MusicService : Service(){
             .setContentIntent(pendingMain)
             .build()
         startForeground(NOTI_ID,noti)
-        Log.d(App.TAG,"Create Noti")
+        //Log.d(App.TAG,"Create Noti")
     }
 
     fun calcelNoti(){

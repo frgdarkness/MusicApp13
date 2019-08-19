@@ -9,10 +9,10 @@ import androidx.core.graphics.drawable.toBitmap
 import com.example.musicappdemo4.R
 import java.lang.Exception
 
-class MyMedia(val context:Context) {
+class MyMedia(private val context:Context) {
 
-    fun getListSong():ArrayList<Song>{
-        val listSong = ArrayList<Song>()
+    fun getSongs():List<Song>{
+        val songs = ArrayList<Song>()
         val projection = arrayOf("title","artist","_data","album_id","duration")
         val cursor = context.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -28,12 +28,11 @@ class MyMedia(val context:Context) {
                 val path = cursor.getString(cursor.getColumnIndex("_data"))
                 val albumID = cursor.getString(cursor.getColumnIndex("album_id"))
                 val timeTotal = cursor.getInt(cursor.getColumnIndex("duration"))
-
-                listSong.add(Song(title, artist, path, timeTotal))
+                songs.add(Song(title, artist, path, timeTotal))
                 //Log.d("DEMO123","$title + $artist + $path")
             }while (cursor.moveToNext())
         }
-        return listSong
+        return songs
     }
 
     fun getCoverBitMap(song: Song):Bitmap{

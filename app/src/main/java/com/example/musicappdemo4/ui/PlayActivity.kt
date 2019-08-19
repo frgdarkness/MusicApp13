@@ -20,7 +20,7 @@ import com.example.musicappdemo4.service.MusicService
 import kotlinx.android.synthetic.main.activity_play.*
 import java.text.SimpleDateFormat
 
-class ActivityPlay : AppCompatActivity(), MainContract.PlayView, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+class PlayActivity : AppCompatActivity(), MainContract.PlayView, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     private var intentService: Intent? = null
     private var musicService: MusicService? = null
@@ -57,7 +57,7 @@ class ActivityPlay : AppCompatActivity(), MainContract.PlayView, View.OnClickLis
                     presenter?.setService(musicService!!)
                     presenter?.onServiceConnected()
                     presenter?.setTimeSong()
-                    Log.d(App.TAG,"connect service in ActivityPlay")
+                    //Log.d(App.TAG,"connect service in PlayActivity")
                 }
             }
         }
@@ -97,7 +97,7 @@ class ActivityPlay : AppCompatActivity(), MainContract.PlayView, View.OnClickLis
     }
 
     override fun onStartTrackingTouch(p0: SeekBar?) {
-        Log.d(App.TAG,"onStartTrackingTough: p0=$p0")
+        //Log.d(App.TAG,"onStartTrackingTough: p0=$p0")
     }
 
     override fun onStopTrackingTouch(p0: SeekBar?) {
@@ -115,23 +115,23 @@ class ActivityPlay : AppCompatActivity(), MainContract.PlayView, View.OnClickLis
     override fun updateSeekbar(progress: Int) {
         sbSongActiPlay.progress = progress
         txtCurrentTime.text = timeFormat.format(progress)
-        Log.d(App.TAG,"Seekbar set progress: $progress")
+        //Log.d(App.TAG,"Seekbar set progress: $progress")
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         close()
-        Log.d(App.TAG,"onBackPressedActivityPlay")
+        //Log.d(App.TAG,"onBackPressedActivityPlay")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         close()
-        Log.d(App.TAG,"onDestroyActivityPlay")
+        //Log.d(App.TAG,"onDestroyActivityPlay")
     }
 
     override fun exitActivityPlay() {
         finish()
-        Log.d(App.TAG,"onExitActivityPlay")
+        //Log.d(App.TAG,"onExitActivityPlay")
     }
 }

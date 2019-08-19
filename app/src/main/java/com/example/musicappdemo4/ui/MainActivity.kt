@@ -1,6 +1,5 @@
 package com.example.musicappdemo4.ui
 
-import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -9,14 +8,11 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicappdemo4.R
-import com.example.musicappdemo4.data.model.App
 import com.example.musicappdemo4.data.model.MyMedia
 import com.example.musicappdemo4.data.model.Song
 import com.example.musicappdemo4.data.remote.MainContract
@@ -75,16 +71,13 @@ class MainActivity : AppCompatActivity(), SongAdapter.SongClick, MainContract.Ma
         unbindService(connection!!)
         isBound = false
         stopService(intentService)
-        Log.d(App.TAG,"unbinded and stopped Service")
+        //Log.d(App.TAG,"unbinded and stopped Service")
     }
 
-    @SuppressLint("WrongConstant")
     fun initRecycleView(){
-        //val listSong = MyMedia(this).getListSong()
-        val listSong = presenter?.getListSong(this)
-        recycleViewMain.layoutManager = LinearLayoutManager(this,LinearLayout.VERTICAL,false)
+        val listSong = presenter?.getSongs(this)
+        recycleViewMain.layoutManager = LinearLayoutManager(this)
         listSong?.let { recycleViewMain.adapter = SongAdapter(it,this) }
-        //recycleViewMain.adapter = SongAdapter(listSong, this)
     }
 
     fun initCurrentSongView(song: Song){
@@ -92,13 +85,13 @@ class MainActivity : AppCompatActivity(), SongAdapter.SongClick, MainContract.Ma
         txtArtistMain.text = song.artist
         txtTitleMain.text = song.title
         btnPlayMain.setImageResource(R.drawable.ic_pause_main)
-        if(isPlay==false)
+        if(!isPlay)
             isPlay = true
     }
 
     override fun onSongClick(index:Int) {
         presenter?.onPickSongToPlay(index)
-        Log.d(App.TAG,"song: $index")
+        //Log.d(App.TAG,"song: $index")
     }
 
     override fun updateInfoSongNow(song: Song) {
@@ -114,7 +107,7 @@ class MainActivity : AppCompatActivity(), SongAdapter.SongClick, MainContract.Ma
             btnPlayMain -> presenter?.onPauseSong()
             else -> {
                 if(isPlay)
-                    startActivity(Intent(this,ActivityPlay::class.java))
+                    startActivity(Intent(this,PlayActivity::class.java))
             }
         }
     }
@@ -122,7 +115,7 @@ class MainActivity : AppCompatActivity(), SongAdapter.SongClick, MainContract.Ma
     override fun exitMain() {
         closeService()
         finish()
-        Log.d(App.TAG,"exitMain")
+        //Log.d(App.TAG,"exitMain")
     }
 
     override fun onDestroy() {
@@ -130,7 +123,7 @@ class MainActivity : AppCompatActivity(), SongAdapter.SongClick, MainContract.Ma
         if(isBound)
             connection?.let { unbindService(it) }
         presenter?.unregisterReceiver(this)
-        Log.d(App.TAG,"onDestroyMain")
+        //Log.d(App.TAG,"onDestroyMain")
 
     }
 

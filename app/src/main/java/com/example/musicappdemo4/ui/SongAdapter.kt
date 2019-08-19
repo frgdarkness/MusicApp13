@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.musicappdemo4.R
 import com.example.musicappdemo4.data.model.Song
 
-class SongAdapter(val listSong: ArrayList<Song>, listener: SongClick) : RecyclerView.Adapter<SongAdapter.ViewHolder>() {
+class SongAdapter(private val listSong: List<Song>,private val listener: SongClick) : RecyclerView.Adapter<SongAdapter.ViewHolder>() {
 
     val songClickListener: SongClick = listener
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,23 +22,24 @@ class SongAdapter(val listSong: ArrayList<Song>, listener: SongClick) : Recycler
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val s = listSong[position]
-        holder.txtArtist.text = s.artist
-        holder.txtTitle.text = s.title
-        holder.imgCover.setImageResource(R.drawable.disc1)
-        holder.itemView.setOnClickListener{
-            songClickListener.onSongClick(position)
-        }
+        val song = listSong[position]
+        holder.bindData(song,listener,position)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val txtTitle = itemView.findViewById<TextView>(R.id.txtTitleSongRow)
         val txtArtist = itemView.findViewById<TextView>(R.id.txtArtistSongRow)
         val imgCover = itemView.findViewById<ImageView>(R.id.imgCoverSongRow)
+
+        fun bindData(song:Song, listener: SongClick, position: Int){
+            txtArtist.text = song.artist
+            txtTitle.text = song.title
+            imgCover.setImageResource(R.drawable.disc1)
+            listener.onSongClick(position)
+        }
     }
 
     interface SongClick{
-        //fun onSongClick(song:Song)
         fun onSongClick(index:Int)
     }
 }

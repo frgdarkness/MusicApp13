@@ -1,6 +1,8 @@
 package com.example.musicappdemo4.data.model
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-class Song (val title:String, val artist:String, val path:String, val timeTotal:Int):Serializable {
+@Parcelize
+class Song (val title:String, val artist:String, val path:String, val timeTotal:Int) : Parcelable{
 }

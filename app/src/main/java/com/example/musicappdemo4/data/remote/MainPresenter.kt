@@ -49,9 +49,9 @@ class MainPresenter() : MainContract.Presenter {
         musicService = null
     }
 
-    override fun getListSong(context: Context):ArrayList<Song> {
+    override fun getSongs(context: Context):List<Song> {
         val myMedia = MyMedia(context)
-        val listSong = myMedia.getListSong()
+        val listSong = myMedia.getSongs()
         return listSong
     }
 
@@ -75,7 +75,7 @@ class MainPresenter() : MainContract.Presenter {
 
     override fun onPickSongToPlay(index: Int) {
         mediaController?.playSongAtIndex(index)
-        Log.d(App.TAG,"onPickSongToPlay: $index")
+        //Log.d(App.TAG,"onPickSongToPlay: $index")
     }
 
     fun updateTimeSong(){
@@ -124,17 +124,17 @@ class MainPresenter() : MainContract.Presenter {
 
     val receiver = object : BroadcastReceiver(){
         override fun onReceive(p0: Context?, p1: Intent?) {
-            Log.d(App.TAG,"action: ${p1?.action}")
+            //Log.d(App.TAG,"action: ${p1?.action}")
             when(p1?.action){
                 MediaController.ACTION_UPDATE_INFO_SONG -> {
-                    val song = p1.getSerializableExtra(MediaController.SONG_VALUE) as Song
+                    val song = p1.getParcelableExtra(MediaController.SONG_VALUE) as Song
                     mainView?.updateInfoSongNow(song)
                     playView?.updateInfoSongNowActiPlay(song)
                 }
 
                 MediaController.ACTION_UPDATE_STATUS_PLAY -> {
                     val isPlay = p1.getBooleanExtra(MediaController.PLAY_STATUS,false)
-                    Log.d(App.TAG,"isplay: $isPlay")
+                    //Log.d(App.TAG,"isplay: $isPlay")
                     val iconMain = if(isPlay){ R.drawable.ic_pause_main} else{ R.drawable.ic_play_main }
                     val iconPlay = if(isPlay){ R.drawable.ic_pause_2} else{ R.drawable.ic_play_2 }
                     mainView?.updateStatusPlay(iconMain)
